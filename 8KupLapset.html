@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>10 KUP valkoisen vyön tekniikat - lapset </title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+  <style>
+    :root {
+      --accent-color: #ff3333;
+      --bg-color: #121212;
+      --text-color: #fff;
+      --card-bg: #1e1e1e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    .top-bar {
+      width: 100%;
+      background-color: #000;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+
+    .top-bar-title {
+      flex: 1;
+      text-align: center;
+      font-size: 80%;
+      font-weight: bold;
+      color: white;
+    }
+
+    .back-button {
+      position: absolute;
+      left: 1rem;
+      background-color: white;
+      color: black;
+      border: none;
+      border-radius: 6px;
+      padding: 0.4rem 0.6rem;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      z-index: 1100;
+    }
+
+    .back-button i {
+      margin-right: 4px;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+    }
+
+    .video-player-container {
+      display: none;
+      position: fixed;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 999;
+      background-color: transparent;
+      width: auto;
+    }
+
+    .video-wrapper {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(255, 51, 51, 0.6);
+      background-color: var(--card-bg);
+      position: relative;
+    }
+
+    iframe {
+      width: 90vw;
+      height: calc(90vw * 0.5625);
+      max-width: 720px;
+      max-height: 405px;
+      border: none;
+      display: block;
+      border-radius: 12px;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      width: 32px;
+      height: 32px;
+      font-size: 1rem;
+      font-weight: bold;
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      line-height: 32px;
+      text-align: center;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    /* Full width grid variant - for desktop when no video playing */
+    .video-grid.video-grid--full {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+
+    .video-item {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .video-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(255, 51, 51, 0.3);
+    }
+
+    .video-item img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .video-item .desc {
+      padding: 0.5rem;
+      font-size: 0.9rem;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 2rem;
+      }
+
+      .video-player-container {
+        position: sticky;
+        top: 90px;
+        left: auto;
+        transform: none;
+        width: auto;
+        background-color: transparent;
+      }
+
+      iframe {
+        width: 50vw;
+        height: calc(50vw * 0.5625);
+      }
+
+      .video-grid {
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        gap: 1rem;
+        padding-left: 1rem;
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <a href="https://example.com" class="back-button">⠀<i class="fas fa-arrow-left"></i>⠀</a>
+    <div class="top-bar-title">10 KUP valkoisen vyön tekniikat - lapset</div>
+  </div>
+
+  <div class="container">
+    <div id="videoPlayer" class="video-player-container" aria-label="Video Player">
+      <div class="video-wrapper">
+        <button class="close-button" onclick="closeVideo()" aria-label="Close Video">X</button>
+        <iframe
+          id="videoFrame"
+          src=""
+          frameborder="0"
+          allowfullscreen
+          allow="autoplay; fullscreen"
+          title="Video Player"
+        ></iframe>
+      </div>
+    </div>
+
+    <div class="video-grid video-grid--full" id="videoList" aria-label="Video List">
+
+
+<div class="video-item fade-in" onclick="playVideo('fg4tp_Uyr5Y')">
+  <img src="https://img.youtube.com/vi/fg4tp_Uyr5Y/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Zuzumsogi ja lyönti</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('XCQoLnpWprg')">
+  <img src="https://img.youtube.com/vi/XCQoLnpWprg/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Arehetsomaki (torjunta alas 2 kädellä)</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('aK7m6WCuevI')">
+  <img src="https://img.youtube.com/vi/aK7m6WCuevI/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Aremaki (alatorjunta)</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('Sj0t9VGMNwE')">
+  <img src="https://img.youtube.com/vi/Sj0t9VGMNwE/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Momthong hetsomaki (2 käden vartalotorjunta)</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('ImzPRTPapLA')">
+  <img src="https://img.youtube.com/vi/ImzPRTPapLA/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Olgulmaki (ylätorjunta)</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('js-W_A2dRTQ')">
+  <img src="https://img.youtube.com/vi/js-W_A2dRTQ/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Momthong bande tsirigi (lyönti astuvan jalan puoleinen)</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('D4peUw5Q_xM')">
+  <img src="https://img.youtube.com/vi/D4peUw5Q_xM/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Aptsagi takajalalla</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('i6wENGWllrA')">
+  <img src="https://img.youtube.com/vi/i6wENGWllrA/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Tolliotsagi takajalalla</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('XgGFLs3-hKE')">
+  <img src="https://img.youtube.com/vi/XgGFLs3-hKE/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">ITSEPUOLUSTUS 1</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('WKzd7E88-cA')">
+  <img src="https://img.youtube.com/vi/WKzd7E88-cA/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">ITSEPUOLUSTUS 2</div>
+</div>
+
+
+
+    </div>
+  </div>
+
+  <script>
+    const videoPlayer = document.getElementById('videoPlayer');
+    const videoFrame = document.getElementById('videoFrame');
+    const videoList = document.getElementById('videoList');
+
+    function playVideo(videoId) {
+      const url = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&showinfo=0&autohide=1`;
+      videoFrame.src = url;
+      videoPlayer.style.display = 'block';
+
+      // On desktop, shrink video list to 2 columns
+      if (window.innerWidth >= 768) {
+        videoList.classList.remove('video-grid--full');
+        videoList.style.width = '48%';
+      }
+
+      if (window.innerWidth < 768) {
+        videoList.style.marginTop = `${videoPlayer.offsetHeight + 20}px`;
+      }
+    }
+
+    function closeVideo() {
+      videoFrame.src = '';
+      videoPlayer.style.display = 'none';
+
+      if (window.innerWidth >= 768) {
+        // Restore full width grid on desktop
+        videoList.classList.add('video-grid--full');
+        videoList.style.width = '100%';
+      }
+
+      if (window.innerWidth < 768) {
+        videoList.style.marginTop = '1rem';
+      }
+    }
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768 && videoFrame.src) {
+        videoPlayer.style.display = 'block';
+        videoList.classList.remove('video-grid--full');
+        videoList.style.width = '48%';
+        videoList.style.marginTop = '0';
+      } else if (window.innerWidth >= 768 && !videoFrame.src) {
+        videoPlayer.style.display = 'none';
+        videoList.classList.add('video-grid--full');
+        videoList.style.width = '100%';
+        videoList.style.marginTop = '0';
+      } else if (window.innerWidth < 768) {
+        if (videoFrame.src) {
+          videoPlayer.style.display = 'block';
+          videoList.style.marginTop = `${videoPlayer.offsetHeight + 20}px`;
+        } else {
+          videoPlayer.style.display = 'none';
+          videoList.style.marginTop = '1rem';
+        }
+        videoList.classList.add('video-grid--full');
+        videoList.style.width = '100%';
+      }
+    });
+
+    // Initial setup on load
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.innerWidth >= 768 && !videoFrame.src) {
+        videoList.classList.add('video-grid--full');
+        videoList.style.width = '100%';
+      }
+    });
+  </script>
+</body>
+</html>

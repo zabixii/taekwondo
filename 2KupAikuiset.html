@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2 KUP 1. asteen musta-ruskean vyön tekniikat - aikuiset</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+  <style>
+    :root {
+      --accent-color: #ff3333;
+      --bg-color: #121212;
+      --text-color: #fff;
+      --card-bg: #1e1e1e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    .top-bar {
+      width: 100%;
+      background-color: #000;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+
+    .top-bar-title {
+      flex: 1;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: white;
+    }
+
+    .back-button {
+      position: absolute;
+      left: 1rem;
+      background-color: white;
+      color: black;
+      border: none;
+      border-radius: 6px;
+      padding: 0.4rem 0.6rem;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .back-button i {
+      margin-right: 4px;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+    }
+
+    .video-player-container {
+      display: none;
+      position: fixed;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 999;
+      background-color: transparent;
+      width: auto;
+    }
+
+    .video-wrapper {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(255, 51, 51, 0.6);
+      background-color: var(--card-bg);
+      position: relative;
+    }
+
+    iframe {
+      width: 90vw;
+      height: calc(90vw * 0.5625);
+      max-width: 720px;
+      max-height: 405px;
+      border: none;
+      display: block;
+      border-radius: 12px;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      width: 32px;
+      height: 32px;
+      font-size: 1rem;
+      font-weight: bold;
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      line-height: 32px;
+      text-align: center;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+      width: 100%;
+    }
+
+    /* On desktop when no video is playing, full width grid */
+    .video-grid.full-width {
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      width: 100%;
+    }
+
+    /* On desktop when video is playing, grid shrinks to 48% */
+    @media (min-width: 768px) {
+      .container {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 2rem;
+      }
+
+      .video-player-container {
+        position: sticky;
+        top: 90px;
+        left: auto;
+        transform: none;
+        width: auto;
+        background-color: transparent;
+        display: none; /* hidden by default */
+      }
+
+      .video-player-container.active {
+        display: block;
+      }
+
+      iframe {
+        width: 50vw;
+        height: calc(50vw * 0.5625);
+        max-width: none;
+        max-height: none;
+      }
+
+      .video-grid {
+        max-height: 90vh;
+        overflow-y: auto;
+        gap: 1rem;
+        padding-left: 1rem;
+        width: 48%;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .video-grid.full-width {
+        width: 100%;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        padding-left: 0;
+      }
+    }
+
+    .video-item {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .video-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(255, 51, 51, 0.3);
+    }
+
+    .video-item img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      flex-shrink: 0;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .video-item .desc {
+      padding: 0.5rem;
+      font-size: 0.9rem;
+      text-align: center;
+      /* Removed nowrap, overflow hidden, and ellipsis to allow multiline */
+      white-space: normal;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <a href="https://example.com" class="back-button" aria-label="Back">
+      <i class="fas fa-arrow-left"></i>
+    </a>
+    <div class="top-bar-title">2 KUP 1. asteen musta-ruskean vyön tekniikat - aikuiset</div>
+  </div>
+
+  <div class="container">
+    <div id="videoPlayer" class="video-player-container" aria-label="Video Player">
+      <div class="video-wrapper">
+        <button class="close-button" onclick="closeVideo()" aria-label="Close Video">X</button>
+        <iframe
+          id="videoFrame"
+          src=""
+          frameborder="0"
+          allowfullscreen
+          allow="autoplay; fullscreen"
+          title="Video Player"
+        ></iframe>
+      </div>
+    </div>
+
+    <div class="video-grid full-width" id="videoList" aria-label="Video List">
+
+
+
+<div class="video-item fade-in" onclick="playVideo('OV33KiNA7c0')">
+  <img src="https://img.youtube.com/vi/OV33KiNA7c0/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">KODURO BAKAT MAKI</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('duBOGP11zhM')">
+  <img src="https://img.youtube.com/vi/duBOGP11zhM/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">WEN SANTHUL MAKI</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('ZaCsLxMm6Ws')">
+  <img src="https://img.youtube.com/vi/ZaCsLxMm6Ws/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">KODURO AREMAKI</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('wELVAKVgWyE')">
+  <img src="https://img.youtube.com/vi/wELVAKVgWyE/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">TANGKIO THOK TSIGI</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('aeMxkFhU37g')">
+  <img src="https://img.youtube.com/vi/aeMxkFhU37g/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">PHALKUP TOLLIO TSIGI TAKAKÄSI</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('fXFfIS09xlA')">
+  <img src="https://img.youtube.com/vi/fXFfIS09xlA/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">BOMSOGI SONNAL MOMTHONG MAKI + APTSAGI + MOMTHONG BARO TSIRIGI</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('KKl0BHLk1gY')">
+  <img src="https://img.youtube.com/vi/KKl0BHLk1gY/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">WEN SANTHUL MAKI, TANGKIO THOK TSIGI</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('mPR5UMVSBCY')">
+  <img src="https://img.youtube.com/vi/mPR5UMVSBCY/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Taegeuk 8 - Phal Jang vaihe vaiheelta</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('6QoniOQLEDA')">
+  <img src="https://img.youtube.com/vi/6QoniOQLEDA/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Taegeuk 8 - Phal Jang</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('96dMeAJDaaU')">
+  <img src="https://img.youtube.com/vi/96dMeAJDaaU/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Hyppyetupotku</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('xreJxtULGmk')">
+  <img src="https://img.youtube.com/vi/xreJxtULGmk/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Hyppysivupotku</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('aOSZl0a4iAc')">
+  <img src="https://img.youtube.com/vi/aOSZl0a4iAc/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Siipipotku</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('Dk5TyVxh0so')">
+  <img src="https://img.youtube.com/vi/Dk5TyVxh0so/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Hyppy tyyhuriotsagi</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('CdK-zNo6-GY')">
+  <img src="https://img.youtube.com/vi/CdK-zNo6-GY/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Askelhyppy tyyhuriotsagi</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('v8Vi7FHkW0I')">
+  <img src="https://img.youtube.com/vi/v8Vi7FHkW0I/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">1 ottelutekniikka</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('NBJMIhWnIug')">
+  <img src="https://img.youtube.com/vi/NBJMIhWnIug/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Ilbon kyorugi 17</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('JLNvsrqqPzk')">
+  <img src="https://img.youtube.com/vi/JLNvsrqqPzk/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Ilbon kyorugi 18</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('_nSmEkHs5dU')">
+  <img src="https://img.youtube.com/vi/_nSmEkHs5dU/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">1 ITSEPUOLUSTUS</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('7PXsNrNB9ao')">
+  <img src="https://img.youtube.com/vi/7PXsNrNB9ao/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">2 ITSEPUOLUSTUS A-kohta</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('GXHj0aMJZtg')">
+  <img src="https://img.youtube.com/vi/GXHj0aMJZtg/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">2 ITSEPUOLUSTUS B-kohta</div>
+</div>
+
+
+
+
+
+    </div>
+  </div>
+
+  <script>
+    const videoPlayer = document.getElementById('videoPlayer');
+    const videoFrame = document.getElementById('videoFrame');
+    const videoList = document.getElementById('videoList');
+
+    function playVideo(videoId) {
+      const url = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&showinfo=0&autohide=1`;
+      videoFrame.src = url;
+      videoPlayer.classList.add('active');
+
+      if (window.innerWidth < 768) {
+        videoPlayer.style.display = 'block';
+        videoList.style.marginTop = `${videoPlayer.offsetHeight + 20}px`;
+      } else {
+        videoPlayer.style.display = 'block';
+        videoList.classList.remove('full-width');
+      }
+    }
+
+    function closeVideo() {
+      videoFrame.src = '';
+      videoPlayer.classList.remove('active');
+      videoPlayer.style.display = 'none';
+
+      if (window.innerWidth < 768) {
+        videoList.style.marginTop = '1rem';
+      } else {
+        videoList.classList.add('full-width');
+      }
+    }
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768 && videoFrame.src) {
+        videoPlayer.style.display = 'block';
+        videoPlayer.classList.add('active');
+        videoList.style.marginTop = '0';
+        videoList.classList.remove('full-width');
+      } else if (!videoFrame.src) {
+        videoPlayer.style.display = 'none';
+        videoPlayer.classList.remove('active');
+        videoList.style.marginTop = '1rem';
+        videoList.classList.add('full-width');
+      }
+    });
+
+    // Initialize state on page load
+    window.addEventListener('load', () => {
+      if (window.innerWidth >= 768) {
+        videoList.classList.add('full-width');
+        videoPlayer.style.display = 'none';
+        videoPlayer.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>
