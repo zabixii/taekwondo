@@ -356,10 +356,13 @@
   const videoPlayer = document.getElementById('videoPlayer');
   const videoFrame = document.getElementById('videoFrame');
   const videoList = document.getElementById('videoList');
+  let historyPushed = false;
 
   function playVideo(videoId) {
     const url = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0&showinfo=0&autohide=1`;
-    videoFrame.src = url;
+
+    // Reset iframe completely first to avoid flash of gray
+    videoFrame.removeAttribute('src');
 
     videoPlayer.classList.add('active');
     videoPlayer.style.display = 'block';
@@ -370,14 +373,23 @@
       videoList.classList.remove('full-width');
     }
 
-    // Push a new state so back button can close video
-    history.pushState({ videoOpen: true }, '', '');
+    // Push history state only when iframe is fully loaded
+    videoFrame.onload = () => {
+      if (!historyPushed) {
+        history.pushState({ videoOpen: true }, '', '');
+        historyPushed = true;
+      }
+    };
+
+    // Set video source (starts load)
+    videoFrame.src = url;
   }
 
   function closeVideo() {
-    videoFrame.src = '';
+    videoFrame.removeAttribute('src'); // Ensures iframe is cleared and hidden cleanly
     videoPlayer.classList.remove('active');
     videoPlayer.style.display = 'none';
+    historyPushed = false;
 
     if (window.innerWidth < 768) {
       videoList.style.marginTop = '1rem';
@@ -385,22 +397,20 @@
       videoList.classList.add('full-width');
     }
 
-    // Only go back in history if we added a state
+    // If we pushed a history state, go back
     if (history.state && history.state.videoOpen) {
       history.back();
     }
   }
 
-  // Listen to back button (popstate)
   window.addEventListener('popstate', () => {
     if (videoPlayer.classList.contains('active')) {
       closeVideo();
     }
   });
 
-  // On page load, make sure video player is closed
   window.addEventListener('load', () => {
-    closeVideo();
+    closeVideo(); // ensure it's not open on reload
   });
 </script>
 </body>
