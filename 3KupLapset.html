@@ -44,9 +44,10 @@
     .top-bar-title {
       flex: 1;
       text-align: center;
-      font-size: 1.2rem;
+      font-size: 3vw;
       font-weight: bold;
       color: white;
+      padding-left: 13vw;
     }
 
     .back-button {
@@ -88,9 +89,10 @@
     .video-wrapper {
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 0 20px rgba(255, 51, 51, 0.6);
+      box-shadow: 0 0 10px 10px rgba(255, 51, 51, 1);
       background-color: var(--card-bg);
       position: relative;
+      top: 1vh;
     }
 
     iframe {
@@ -349,6 +351,18 @@
   <img src="https://img.youtube.com/vi/9RgYXwkSiYM/0.jpg" alt="Video Thumbnail" />
   <div class="desc">3 ottelutekniikka</div>
 </div>
+
+<!--
+<div class="vid-item" onClick="document.getElementById('vid_frame').src='https://www.youtube.com/embed/u1QaHh3qfqM?autoplay=1&rel=0&showinfo=0&autohide=1'">
+  <div class="thumb"><img src="https://img.youtube.com/vi/u1QaHh3qfqM/0.jpg"></div>
+  <div class="desc">Ilbon kyorugi 15</div>
+</div>
+
+<div class="vid-item" onClick="document.getElementById('vid_frame').src='https://www.youtube.com/embed/FubO9tBwKqg?autoplay=1&rel=0&showinfo=0&autohide=1'">
+  <div class="thumb"><img src="https://img.youtube.com/vi/FubO9tBwKqg/0.jpg"></div>
+  <div class="desc">Ilbon kyorugi 16 </div>
+</div>
+-->
 
 <div class="video-item fade-in" onclick="playVideo('-ZauFiO_Pk4')">
   <img src="https://img.youtube.com/vi/-ZauFiO_Pk4/0.jpg" alt="Video Thumbnail" />

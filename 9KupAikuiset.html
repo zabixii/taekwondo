@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>10 KUP valkoisen vyön tekniikat - aikuiset </title>
+  <title>9 KUP keltaisen vyön tekniikat - aikuiset</title>
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -44,9 +44,10 @@
     .top-bar-title {
       flex: 1;
       text-align: center;
-      font-size: 80%;
+      font-size: 3vw;
       font-weight: bold;
       color: white;
+      padding-left: 13vw;
     }
 
     .back-button {
@@ -62,7 +63,6 @@
       display: flex;
       align-items: center;
       text-decoration: none;
-      z-index: 1100;
     }
 
     .back-button i {
@@ -89,9 +89,10 @@
     .video-wrapper {
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 0 20px rgba(255, 51, 51, 0.6);
+      box-shadow: 0 0 10px 10px rgba(255, 51, 51, 1);
       background-color: var(--card-bg);
       position: relative;
+      top: 1vh;
     }
 
     iframe {
@@ -123,44 +124,19 @@
 
     .video-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
       gap: 1rem;
       margin-top: 1rem;
-    }
-    
-    /* Full width grid variant - for desktop when no video playing */
-    .video-grid.video-grid--full {
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    }
-
-    .video-item {
-      background-color: var(--card-bg);
-      border-radius: 10px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .video-item:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(255, 51, 51, 0.3);
-    }
-
-    .video-item img {
       width: 100%;
-      display: block;
-      object-fit: cover;
     }
 
-    .video-item .desc {
-      padding: 0.5rem;
-      font-size: 0.9rem;
-      text-align: center;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    /* On desktop when no video is playing, full width grid */
+    .video-grid.full-width {
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      width: 100%;
     }
 
+    /* On desktop when video is playing, grid shrinks to 48% */
     @media (min-width: 768px) {
       .container {
         flex-direction: row;
@@ -175,20 +151,67 @@
         transform: none;
         width: auto;
         background-color: transparent;
+        display: none; /* hidden by default */
+      }
+
+      .video-player-container.active {
+        display: block;
       }
 
       iframe {
         width: 50vw;
         height: calc(50vw * 0.5625);
+        max-width: none;
+        max-height: none;
       }
 
       .video-grid {
-        width: 100%;
         max-height: 90vh;
         overflow-y: auto;
         gap: 1rem;
         padding-left: 1rem;
+        width: 48%;
+        grid-template-columns: 1fr 1fr;
       }
+
+      .video-grid.full-width {
+        width: 100%;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        padding-left: 0;
+      }
+    }
+
+    .video-item {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .video-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(255, 51, 51, 0.3);
+    }
+
+    .video-item img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      flex-shrink: 0;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .video-item .desc {
+      padding: 0.5rem;
+      font-size: 0.9rem;
+      text-align: center;
+      /* Removed nowrap, overflow hidden, and ellipsis to allow multiline */
+      white-space: normal;
+      overflow-wrap: break-word;
+      word-break: break-word;
     }
 
     .fade-in {
@@ -209,8 +232,10 @@
 </head>
 <body>
   <div class="top-bar">
-    <a href="https://example.com" class="back-button">⠀<i class="fas fa-arrow-left"></i>⠀</a>
-    <div class="top-bar-title">10 KUP valkoisen vyön tekniikat - aikuiset</div>
+    <a href="https://example.com" class="back-button" aria-label="Back">
+      <i class="fas fa-arrow-left"></i>
+    </a>
+    <div class="top-bar-title">9 KUP keltaisen vyön tekniikat - aikuiset</div>
   </div>
 
   <div class="container">
@@ -228,65 +253,103 @@
       </div>
     </div>
 
-    <div class="video-grid video-grid--full" id="videoList" aria-label="Video List">
+    <div class="video-grid full-width" id="videoList" aria-label="Video List">
 
 
-<div class="video-item fade-in" onclick="playVideo('fg4tp_Uyr5Y')">
-  <img src="https://img.youtube.com/vi/fg4tp_Uyr5Y/0.jpg" alt="Video Thumbnail" />
-  <div class="desc">Zuzumsogi ja lyönti</div>
+
+<div class="video-item fade-in" onclick="playVideo('12kiRlUGI9Q')">
+  <img src="https://img.youtube.com/vi/12kiRlUGI9Q/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">MOMTHONG AN MAKI PLUS VASTAPUOLELTA</div>
 </div>
 
-<div class="video-item fade-in" onclick="playVideo('XCQoLnpWprg')">
-  <img src="https://img.youtube.com/vi/XCQoLnpWprg/0.jpg" alt="Video Thumbnail" />
-  <div class="desc">Arehetsomaki (torjunta alas 2 kädellä)</div>
+<div class="video-item fade-in" onclick="playVideo('Y3eadsbQavY')">
+  <img src="https://img.youtube.com/vi/Y3eadsbQavY/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">OLGUL TSIRIGI</div>
 </div>
 
-<div class="video-item fade-in" onclick="playVideo('aK7m6WCuevI')">
-  <img src="https://img.youtube.com/vi/aK7m6WCuevI/0.jpg" alt="Video Thumbnail" />
-  <div class="desc">Aremaki (alatorjunta)</div>
+<div class="video-item fade-in" onclick="playVideo('1J9NctzzZkY')">
+  <img src="https://img.youtube.com/vi/1J9NctzzZkY/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">AREMAKI+MOMTHONG BARO TSIRIGI</div>
 </div>
 
-<div class="video-item fade-in" onclick="playVideo('Sj0t9VGMNwE')">
-  <img src="https://img.youtube.com/vi/Sj0t9VGMNwE/0.jpg" alt="Video Thumbnail" />
-  <div class="desc">Momthong hetsomaki (2 käden vartalotorjunta)</div>
+<div class="video-item fade-in" onclick="playVideo('HIHVHK94cDg')">
+  <img src="https://img.youtube.com/vi/HIHVHK94cDg/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">APTSAGI MOMTHONG BANDE TSIRIGI</div>
 </div>
 
-<div class="video-item fade-in" onclick="playVideo('ImzPRTPapLA')">
-  <img src="https://img.youtube.com/vi/ImzPRTPapLA/0.jpg" alt="Video Thumbnail" />
-  <div class="desc">Olgulmaki (ylätorjunta)</div>
+<div class="video-item fade-in" onclick="playVideo('tCV0YsERQuA')">
+  <img src="https://img.youtube.com/vi/tCV0YsERQuA/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Taegeuk 1 - Il Jang vaihe vaiheelta</div>
 </div>
 
-<div class="video-item fade-in" onclick="playVideo('js-W_A2dRTQ')">
-  <img src="https://img.youtube.com/vi/js-W_A2dRTQ/0.jpg" alt="Video Thumbnail" />
-  <div class="desc">Momthong bande tsirigi (lyönti astuvan jalan puoleinen)</div>
+<div class="video-item fade-in" onclick="playVideo('ZNEnnUAp1Mw')">
+  <img src="https://img.youtube.com/vi/ZNEnnUAp1Mw/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Taegeuk 1 - Il Jang</div>
 </div>
 
-<div class="video-item fade-in" onclick="playVideo('c53yC4XEw5E')">
-  <img src="https://img.youtube.com/vi/c53yC4XEw5E/0.jpg" alt="Video Thumbnail" />
-  <div class="desc">Momthong baro tsirigi (lyönti takajalan puoleinen)</div>
+<div class="video-item fade-in" onclick="playVideo('pd9H39eThZE')">
+  <img src="https://img.youtube.com/vi/pd9H39eThZE/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Aptsagi takajalla, osuma päkiällä</div>
 </div>
 
-<div class="video-item fade-in" onclick="playVideo('D4peUw5Q_xM')">
-  <img src="https://img.youtube.com/vi/D4peUw5Q_xM/0.jpg" alt="Video Thumbnail" />
-  <div class="desc">Aptsagi takajalalla</div>
+<div class="video-item fade-in" onclick="playVideo('FV788q2vwpY')">
+  <img src="https://img.youtube.com/vi/FV788q2vwpY/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Mirotsagi takajalalla</div>
 </div>
 
-<div class="video-item fade-in" onclick="playVideo('i6wENGWllrA')">
-  <img src="https://img.youtube.com/vi/i6wENGWllrA/0.jpg" alt="Video Thumbnail" />
-  <div class="desc">Tolliotsagi takajalalla</div>
+<div class="video-item fade-in" onclick="playVideo('w-3hVNTVBXc')">
+  <img src="https://img.youtube.com/vi/w-3hVNTVBXc/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Aptolliotsagi etujalalla</div>
 </div>
 
-<div class="video-item fade-in" onclick="playVideo('dcXPvykvZk8')">
-  <img src="https://img.youtube.com/vi/dcXPvykvZk8/0.jpg" alt="Video Thumbnail" />
-  <div class="desc">1 ottelutekniikka</div>
+<div class="video-item fade-in" onclick="playVideo('cW7AccSaH2A')">
+  <img src="https://img.youtube.com/vi/cW7AccSaH2A/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Takajalan tolliotsagi + takajalan tolliotsagi</div>
 </div>
 
-<div class="video-item fade-in" onclick="playVideo('k8JQcXF3fwk')">
-  <img src="https://img.youtube.com/vi/k8JQcXF3fwk/0.jpg" alt="Video Thumbnail" />
-  <div class="desc">2 ottelutekniikka</div>
+<div class="video-item fade-in" onclick="playVideo('afuHU9cRg1w')">
+  <img src="https://img.youtube.com/vi/afuHU9cRg1w/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Aptollio etujalalla eteenpäin + takajalan mirotsagi</div>
 </div>
 
+<div class="video-item fade-in" onclick="playVideo('2UHAjtWbkU8')">
+  <img src="https://img.youtube.com/vi/2UHAjtWbkU8/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Ottelutekniikka 1</div>
+</div>
 
+<div class="video-item fade-in" onclick="playVideo('ekrVDj7wUUo')">
+  <img src="https://img.youtube.com/vi/ekrVDj7wUUo/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Ottelutekniikka 2</div>
+</div>
+
+<!--
+<div class="vid-item" onClick="document.getElementById('vid_frame').src='https://www.youtube.com/embed/l6ElCl4JEUo?autoplay=1&rel=0&showinfo=0&autohide=1'">
+  <div class="thumb"><img src="https://img.youtube.com/vi/l6ElCl4JEUo/0.jpg"></div>
+  <div class="desc">Ilbon kyorugi 3</div>
+</div>
+
+<div class="vid-item" onClick="document.getElementById('vid_frame').src='https://www.youtube.com/embed/nRq4NM34nss?autoplay=1&rel=0&showinfo=0&autohide=1'">
+  <div class="thumb"><img src="https://img.youtube.com/vi/nRq4NM34nss/0.jpg"></div>
+  <div class="desc">Ilbon kyorugi 4</div>
+</div>
+-->
+
+<div class="video-item fade-in" onclick="playVideo('AXyAQCZ6V_4')">
+  <img src="https://img.youtube.com/vi/AXyAQCZ6V_4/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">ITSEPUOLUSTUS 1</div>
+</div>
+
+<div class="video-item fade-in" onclick="playVideo('OqznLn444c4')">
+  <img src="https://img.youtube.com/vi/OqznLn444c4/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">ITSEPUOLUSTUS 2</div>
+</div>
+
+<!--
+<div class="vid-item" onClick="document.getElementById('vid_frame').src='https://www.youtube.com/embed/RlrzZA8FHt8?autoplay=1&rel=0&showinfo=0&autohide=1'">
+  <div class="thumb"><img src="https://img.youtube.com/vi/RlrzZA8FHt8/0.jpg"></div>
+  <div class="desc">ITSEPUOLUSTUS  3</div>
+</div>
+-->
 
 
     </div>
@@ -300,63 +363,49 @@
     function playVideo(videoId) {
       const url = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&showinfo=0&autohide=1`;
       videoFrame.src = url;
-      videoPlayer.style.display = 'block';
-
-      // On desktop, shrink video list to 2 columns
-      if (window.innerWidth >= 768) {
-        videoList.classList.remove('video-grid--full');
-        videoList.style.width = '48%';
-      }
+      videoPlayer.classList.add('active');
 
       if (window.innerWidth < 768) {
+        videoPlayer.style.display = 'block';
         videoList.style.marginTop = `${videoPlayer.offsetHeight + 20}px`;
+      } else {
+        videoPlayer.style.display = 'block';
+        videoList.classList.remove('full-width');
       }
     }
 
     function closeVideo() {
       videoFrame.src = '';
+      videoPlayer.classList.remove('active');
       videoPlayer.style.display = 'none';
-
-      if (window.innerWidth >= 768) {
-        // Restore full width grid on desktop
-        videoList.classList.add('video-grid--full');
-        videoList.style.width = '100%';
-      }
 
       if (window.innerWidth < 768) {
         videoList.style.marginTop = '1rem';
+      } else {
+        videoList.classList.add('full-width');
       }
     }
 
     window.addEventListener('resize', () => {
       if (window.innerWidth >= 768 && videoFrame.src) {
         videoPlayer.style.display = 'block';
-        videoList.classList.remove('video-grid--full');
-        videoList.style.width = '48%';
+        videoPlayer.classList.add('active');
         videoList.style.marginTop = '0';
-      } else if (window.innerWidth >= 768 && !videoFrame.src) {
+        videoList.classList.remove('full-width');
+      } else if (!videoFrame.src) {
         videoPlayer.style.display = 'none';
-        videoList.classList.add('video-grid--full');
-        videoList.style.width = '100%';
-        videoList.style.marginTop = '0';
-      } else if (window.innerWidth < 768) {
-        if (videoFrame.src) {
-          videoPlayer.style.display = 'block';
-          videoList.style.marginTop = `${videoPlayer.offsetHeight + 20}px`;
-        } else {
-          videoPlayer.style.display = 'none';
-          videoList.style.marginTop = '1rem';
-        }
-        videoList.classList.add('video-grid--full');
-        videoList.style.width = '100%';
+        videoPlayer.classList.remove('active');
+        videoList.style.marginTop = '1rem';
+        videoList.classList.add('full-width');
       }
     });
 
-    // Initial setup on load
-    window.addEventListener('DOMContentLoaded', () => {
-      if (window.innerWidth >= 768 && !videoFrame.src) {
-        videoList.classList.add('video-grid--full');
-        videoList.style.width = '100%';
+    // Initialize state on page load
+    window.addEventListener('load', () => {
+      if (window.innerWidth >= 768) {
+        videoList.classList.add('full-width');
+        videoPlayer.style.display = 'none';
+        videoPlayer.classList.remove('active');
       }
     });
   </script>

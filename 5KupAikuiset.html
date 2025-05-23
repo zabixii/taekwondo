@@ -44,9 +44,10 @@
     .top-bar-title {
       flex: 1;
       text-align: center;
-      font-size: 1.2rem;
+      font-size: 3vw;
       font-weight: bold;
       color: white;
+      padding-left: 13vw;
     }
 
     .back-button {
@@ -88,9 +89,10 @@
     .video-wrapper {
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 0 20px rgba(255, 51, 51, 0.6);
+      box-shadow: 0 0 10px 10px rgba(255, 51, 51, 1);
       background-color: var(--card-bg);
       position: relative;
+      top: 1vh;
     }
 
     iframe {
@@ -238,7 +240,7 @@
 
   <div class="container">
     <div id="videoPlayer" class="video-player-container" aria-label="Video Player">
-      <div class="video-wrapper">s
+      <div class="video-wrapper">
         <button class="close-button" onclick="closeVideo()" aria-label="Close Video">X</button>
         <iframe
           id="videoFrame"
@@ -325,6 +327,20 @@
   <div class="desc">2 ottelutekniikka</div>
 </div>
 
+<!--
+<div class="video-item fade-in" onclick="playVideo('BbroIsjI_m8')">
+  <img src="https://img.youtube.com/vi/BbroIsjI_m8/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Ilbon kyorugi 11</div>
+</div>
+-->
+
+<!--
+<div class="video-item fade-in" onclick="playVideo('nk2lk2yzBPw')">
+  <img src="https://img.youtube.com/vi/nk2lk2yzBPw/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">Ilbon kyorugi 12</div>
+</div>
+-->
+
 <div class="video-item fade-in" onclick="playVideo('nQpJKGwto4E')">
   <img src="https://img.youtube.com/vi/nQpJKGwto4E/0.jpg" alt="Video Thumbnail" />
   <div class="desc">1 + 2 ITSEPUOLUSTUS</div>
@@ -334,6 +350,13 @@
   <img src="https://img.youtube.com/vi/50DBDV1NKwc/0.jpg" alt="Video Thumbnail" />
   <div class="desc">2 ITSEPUOLUSTUS</div>
 </div>
+
+<!--
+<div class="video-item fade-in" onclick="playVideo('rnSsiLJofbA')">
+  <img src="https://img.youtube.com/vi/rnSsiLJofbA/0.jpg" alt="Video Thumbnail" />
+  <div class="desc">3 ITSEPUOLUSTUS</div>
+</div>
+-->
 
 
 
