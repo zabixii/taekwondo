@@ -356,13 +356,10 @@
   const videoPlayer = document.getElementById('videoPlayer');
   const videoFrame = document.getElementById('videoFrame');
   const videoList = document.getElementById('videoList');
-  let historyPushed = false;
 
   function playVideo(videoId) {
     const url = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0&showinfo=0&autohide=1`;
-
-    // Reset iframe completely first to avoid flash of gray
-    videoFrame.removeAttribute('src');
+    videoFrame.src = url;
 
     videoPlayer.classList.add('active');
     videoPlayer.style.display = 'block';
@@ -373,23 +370,13 @@
       videoList.classList.remove('full-width');
     }
 
-    // Push history state only when iframe is fully loaded
-    videoFrame.onload = () => {
-      if (!historyPushed) {
-        history.pushState({ videoOpen: true }, '', '');
-        historyPushed = true;
-      }
-    };
-
-    // Set video source (starts load)
-    videoFrame.src = url;
+    history.pushState({ videoOpen: true }, '', '');
   }
 
   function closeVideo() {
-    videoFrame.removeAttribute('src'); // Ensures iframe is cleared and hidden cleanly
+    videoFrame.src = '';
     videoPlayer.classList.remove('active');
     videoPlayer.style.display = 'none';
-    historyPushed = false;
 
     if (window.innerWidth < 768) {
       videoList.style.marginTop = '1rem';
@@ -397,21 +384,33 @@
       videoList.classList.add('full-width');
     }
 
-    // If we pushed a history state, go back
     if (history.state && history.state.videoOpen) {
       history.back();
     }
   }
 
+  // Listen to browser back button
   window.addEventListener('popstate', () => {
     if (videoPlayer.classList.contains('active')) {
       closeVideo();
     }
   });
 
+  // On load, ensure video player is hidden
   window.addEventListener('load', () => {
-    closeVideo(); // ensure it's not open on reload
+    closeVideo();
   });
+
+  // Continuous check to close player if iframe is empty (e.g. user hit back on Android)
+  setInterval(() => {
+    const currentSrc = videoFrame.getAttribute('src');
+    const isYoutube = currentSrc && currentSrc.includes('youtube.com/embed/');
+
+    if (!isYoutube && videoPlayer.classList.contains('active')) {
+      closeVideo();
+    }
+  }, 10); // check every 1 second
 </script>
+
 </body>
 </html>
