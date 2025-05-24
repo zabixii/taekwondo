@@ -47,7 +47,7 @@
       font-size: 3vw;
       font-weight: bold;
       color: white;
-      padding-left: 13vw;
+
     }
 
     .back-button {
@@ -232,7 +232,7 @@
 </head>
 <body>
   <div class="top-bar">
-    <a href="Lista.html" class="back-button" aria-label="Back">
+    <a href="Ohjeet.html" class="back-button" aria-label="Back">
       <i class="fas fa-arrow-left"></i>
     </a>
     <div class="top-bar-title">Vyön sitominen</div>
@@ -271,59 +271,47 @@
     </div>
   </div>
 
-  <script>
-    const videoPlayer = document.getElementById('videoPlayer');
-    const videoFrame = document.getElementById('videoFrame');
-    const videoList = document.getElementById('videoList');
+<script>
+  const videoPlayer = document.getElementById('videoPlayer');
+  const videoFrame = document.getElementById('videoFrame');
+  const videoList = document.getElementById('videoList');
 
-    function playVideo(videoId) {
-      const url = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&showinfo=0&autohide=1`;
-      videoFrame.src = url;
-      videoPlayer.classList.add('active');
+  function playVideo(videoId) {
+    const url = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0&showinfo=0`;
 
-      if (window.innerWidth < 768) {
-        videoPlayer.style.display = 'block';
-        videoList.style.marginTop = `${videoPlayer.offsetHeight + 20}px`;
-      } else {
-        videoPlayer.style.display = 'block';
-        videoList.classList.remove('full-width');
-      }
+    history.pushState({ videoOpen: true }, '', '');
+
+    videoFrame.src = url;
+    videoPlayer.classList.add('active');
+    videoPlayer.style.display = 'block';
+
+    if (window.innerWidth < 768) {
+      videoList.style.marginTop = `${videoPlayer.offsetHeight + 20}px`;
+    } else {
+      videoList.classList.remove('full-width');
+    }
+  }
+
+  function closeVideo(shouldGoBack = true) {
+    videoFrame.removeAttribute('src');
+    videoPlayer.classList.remove('active');
+    videoPlayer.style.display = 'none';
+
+    if (window.innerWidth < 768) {
+      videoList.style.marginTop = '1rem';
+    } else {
+      videoList.classList.add('full-width');
     }
 
-    function closeVideo() {
-      videoFrame.src = '';
-      videoPlayer.classList.remove('active');
-      videoPlayer.style.display = 'none';
-
-      if (window.innerWidth < 768) {
-        videoList.style.marginTop = '1rem';
-      } else {
-        videoList.classList.add('full-width');
-      }
+    if (shouldGoBack && history.state?.videoOpen) {
+      history.back();
     }
+  }
 
-    window.addEventListener('resize', () => {
-      if (window.innerWidth >= 768 && videoFrame.src) {
-        videoPlayer.style.display = 'block';
-        videoPlayer.classList.add('active');
-        videoList.style.marginTop = '0';
-        videoList.classList.remove('full-width');
-      } else if (!videoFrame.src) {
-        videoPlayer.style.display = 'none';
-        videoPlayer.classList.remove('active');
-        videoList.style.marginTop = '1rem';
-        videoList.classList.add('full-width');
-      }
-    });
-
-    // Initialize state on page load
-    window.addEventListener('load', () => {
-      if (window.innerWidth >= 768) {
-        videoList.classList.add('full-width');
-        videoPlayer.style.display = 'none';
-        videoPlayer.classList.remove('active');
-      }
-    });
-  </script>
+  //Force full reload when navigating back
+  window.addEventListener('popstate', (event) => {
+    location.reload();
+  });
+</script>
 </body>
 </html>

@@ -42,11 +42,33 @@
     }
 
     .top-bar-title {
+      flex: 1;
       text-align: center;
-      font-size: 1.2rem;
+      font-size: 3vw;
       font-weight: bold;
       color: white;
+
     }
+
+    .back-button {
+      position: absolute;
+      left: 1rem;
+      background-color: white;
+      color: black;
+      border: none;
+      border-radius: 6px;
+      padding: 0.4rem 0.6rem;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .back-button i {
+      margin-right: 4px;
+    }
+
 
     .container {
       display: flex;
@@ -119,6 +141,9 @@
 </head>
 <body>
   <div class="top-bar">
+    <a href="Lista.html" class="back-button" aria-label="Back">
+      <i class="fas fa-arrow-left"></i>
+    </a>
     <div class="top-bar-title">Oppaat ja ohjeet</div>
   </div>
 
@@ -138,7 +163,7 @@
         </div>
         5 min venyttelyohjelma
       </a>
-      <a href="10minvenyttely" class="nav-button" style="--bar1-color: ; --bar2-color: ;">
+      <a href="10minvenyttely.html" class="nav-button" style="--bar1-color: ; --bar2-color: ;">
         <div class="bar-stack">
           <div class="top-half"></div>
           <div class="bottom-half"></div>

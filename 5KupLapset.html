@@ -358,23 +358,23 @@
   const videoList = document.getElementById('videoList');
 
   function playVideo(videoId) {
-    const url = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0&showinfo=0&autohide=1`;
+    const url = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0&showinfo=0`;
+
+    history.pushState({ videoOpen: true }, '', '');
+
     videoFrame.src = url;
     videoPlayer.classList.add('active');
+    videoPlayer.style.display = 'block';
 
     if (window.innerWidth < 768) {
-      videoPlayer.style.display = 'block';
       videoList.style.marginTop = `${videoPlayer.offsetHeight + 20}px`;
     } else {
-      videoPlayer.style.display = 'block';
       videoList.classList.remove('full-width');
     }
-
-    history.pushState({ playing: true }, '');
   }
 
-  function closeVideo() {
-    videoFrame.src = '';
+  function closeVideo(shouldGoBack = true) {
+    videoFrame.removeAttribute('src');
     videoPlayer.classList.remove('active');
     videoPlayer.style.display = 'none';
 
@@ -383,42 +383,15 @@
     } else {
       videoList.classList.add('full-width');
     }
-  }
 
-  function isValidYouTubeUrl(url) {
-    return url.includes('youtube.com/embed/');
-  }
-
-  function validateVideoSrc() {
-    const currentSrc = videoFrame.src;
-    if (!isValidYouTubeUrl(currentSrc) || currentSrc === '') {
-      closeVideo();
+    if (shouldGoBack && history.state?.videoOpen) {
+      history.back();
     }
   }
 
-  // Re-check every second to catch iframe clears from Android back button
-  setInterval(validateVideoSrc, 1000);
-
-  window.addEventListener('resize', () => {
-    if (window.innerWidth >= 768 && isValidYouTubeUrl(videoFrame.src)) {
-      videoPlayer.style.display = 'block';
-      videoPlayer.classList.add('active');
-      videoList.style.marginTop = '0';
-      videoList.classList.remove('full-width');
-    } else if (!isValidYouTubeUrl(videoFrame.src)) {
-      videoPlayer.style.display = 'none';
-      videoPlayer.classList.remove('active');
-      videoList.style.marginTop = '1rem';
-      videoList.classList.add('full-width');
-    }
-  });
-
-  window.addEventListener('load', () => {
-    closeVideo();
-  });
-
-  window.addEventListener('popstate', () => {
-    validateVideoSrc();
+  //Force full reload when navigating back
+  window.addEventListener('popstate', (event) => {
+    location.reload();
   });
 </script>
 

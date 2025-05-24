@@ -370,29 +370,23 @@
   const videoList = document.getElementById('videoList');
 
   function playVideo(videoId) {
-    const url = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0&showinfo=0&autohide=1`;
+    const url = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0&showinfo=0`;
 
-    if (!url.includes('youtube.com/embed/')) {
-      closeVideo();
-      return;
-    }
+    history.pushState({ videoOpen: true }, '', '');
 
     videoFrame.src = url;
     videoPlayer.classList.add('active');
+    videoPlayer.style.display = 'block';
 
     if (window.innerWidth < 768) {
-      videoPlayer.style.display = 'block';
       videoList.style.marginTop = `${videoPlayer.offsetHeight + 20}px`;
     } else {
-      videoPlayer.style.display = 'block';
       videoList.classList.remove('full-width');
     }
-
-    history.pushState({ playing: true }, '');
   }
 
-  function closeVideo() {
-    videoFrame.src = '';
+  function closeVideo(shouldGoBack = true) {
+    videoFrame.removeAttribute('src');
     videoPlayer.classList.remove('active');
     videoPlayer.style.display = 'none';
 
@@ -401,45 +395,16 @@
     } else {
       videoList.classList.add('full-width');
     }
-  }
 
-  function validateVideoSrc() {
-    const src = videoFrame.src;
-    if (!src.includes('youtube.com/embed/')) {
-      closeVideo();
+    if (shouldGoBack && history.state?.videoOpen) {
+      history.back();
     }
   }
 
-  window.addEventListener('resize', () => {
-    if (window.innerWidth >= 768 && videoFrame.src.includes('youtube.com/embed/')) {
-      videoPlayer.style.display = 'block';
-      videoPlayer.classList.add('active');
-      videoList.style.marginTop = '0';
-      videoList.classList.remove('full-width');
-    } else if (!videoFrame.src) {
-      videoPlayer.style.display = 'none';
-      videoPlayer.classList.remove('active');
-      videoList.style.marginTop = '1rem';
-      videoList.classList.add('full-width');
-    }
+  //Force full reload when navigating back
+  window.addEventListener('popstate', (event) => {
+    location.reload();
   });
-
-  window.addEventListener('load', () => {
-    videoFrame.src = '';
-    videoPlayer.classList.remove('active');
-    videoPlayer.style.display = 'none';
-    videoList.classList.add('full-width');
-    validateVideoSrc();
-  });
-
-  window.onpopstate = function () {
-    if (videoPlayer.classList.contains('active')) {
-      closeVideo();
-      history.pushState(null, '');
-    }
-  };
-
-  setInterval(validateVideoSrc, 2000);
 </script>
 
 </body>
